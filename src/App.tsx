@@ -1,6 +1,50 @@
+import { useState, useEffect } from 'react'
+import { handleChange, handlePercentage } from './services/eventsHandlers'
 import { DolarIcon, PersonIcon } from './components/Icons'
 
 const App: React.FC = () => {
+  const [bill, setBill] = useState<number>(0)
+  const [people, setPeople] = useState<number>(1)
+  const [tipsPerPerson, setTipsPerPerson] = useState<number>(0)
+  const [totalPerPerson, setTotalPerPerson] = useState<number>(0)
+  const [tipPercentage, setTipPercentage] = useState<number>(0.05)
+
+  const realPeople = (people > 0 && people !== undefined && people !== null && !isNaN(people))
+
+  function handleClick (percentage: number): void {
+    handlePercentage({ setterFunction: setTipPercentage, percentage })
+  }
+
+  useEffect(() => {
+    function calculateTip (): void {
+      const initialTipsPerPerson = 0
+      const initialTotalperPerson = 0
+      if (bill === 0 || !realPeople) {
+        setTipsPerPerson(initialTipsPerPerson)
+        setTotalPerPerson(initialTotalperPerson)
+      }
+
+      // Cálculo de propina por persona
+      const tips = bill * tipPercentage
+      const newTipsPerPerson = Number((tips / people).toFixed(2))
+
+      // Cálculo del total a pagar de ticket + propina por persona
+      const newTotalperPerson = Number(((bill + tips) / people).toFixed(2))
+
+      if (!isFinite(newTipsPerPerson) && !isFinite(newTotalperPerson)) {
+        setTipsPerPerson(initialTipsPerPerson)
+        setTotalPerPerson(initialTotalperPerson)
+      } else {
+        setTipsPerPerson(newTipsPerPerson)
+        setTotalPerPerson(newTotalperPerson)
+      }
+
+      console.log({ newTipsPerPerson, newTotalperPerson })
+    }
+
+    calculateTip()
+  }, [bill, people, tipPercentage, realPeople])
+
   return (
     <div className='h-screen w-screen fondo bg-teal-100 flex flex-col justify-center items-center'>
       <h1 className='text-3xl text-teal-950 tracking-widest'>SPLITTER</h1>
@@ -17,7 +61,7 @@ const App: React.FC = () => {
           <fieldset>
             <label className=''>Bill</label>
             <div>
-              <input type='number' inputMode='numeric' />
+              <input type='number' inputMode='numeric' onChange={(event) => { handleChange({ event, setterFunction: setBill }) }} />
               <DolarIcon className='absolute top-3 left-3' />
             </div>
           </fieldset>
@@ -34,11 +78,11 @@ const App: React.FC = () => {
             
             `}
             >
-              <button>5%</button>
-              <button>10%</button>
-              <button>15%</button>
-              <button>20%</button>
-              <button>50%</button>
+              <button onClick={() => handleClick(0.05)}>5%</button>
+              <button onClick={() => handleClick(0.10)}>10%</button>
+              <button onClick={() => handleClick(0.15)}>15%</button>
+              <button onClick={() => handleClick(0.20)}>20%</button>
+              <button onClick={() => handleClick(0.50)}>50%</button>
               <input
                 className='bg-teal-100/50 font-bold placeholder-teal-900/70 text-teal-900/70'
                 type='number'
@@ -51,7 +95,7 @@ const App: React.FC = () => {
           <fieldset>
             <label>Number of People</label>
             <div>
-              <input type='number' inputMode='numeric' />
+              <input type='number' inputMode='numeric' onChange={(event) => { handleChange({ event, setterFunction: setPeople }) }} />
               <PersonIcon className='absolute top-3 left-3' />
             </div>
           </fieldset>
@@ -63,7 +107,7 @@ const App: React.FC = () => {
               <p className='text-white text-md'>Tip Amount</p>
               <p className='text-gray-400 text-sm'>/ Person</p>
             </div>
-            <span className='text-teal-500 text-4xl'>$100</span>
+            <span className='text-teal-500 text-4xl'>${tipsPerPerson}</span>
           </div>
 
           <div className='flex justify-between'>
@@ -71,7 +115,7 @@ const App: React.FC = () => {
               <p className='text-white text-md'>Total</p>
               <p className='text-gray-400 text-sm'>/ Person</p>
             </div>
-            <span className='text-teal-500 text-4xl'>$100</span>
+            <span className='text-teal-500 text-4xl'>${totalPerPerson}</span>
           </div>
           <button className='bg-teal-400 py-3 text-lg text-teal-900 rounded-xl'>RESET</button>
         </section>
