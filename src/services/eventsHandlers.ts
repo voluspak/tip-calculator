@@ -1,19 +1,21 @@
-interface SetterHandler {
-  setterFunction: (value: number) => void
-}
-
-interface HandleChangeProps extends SetterHandler {
-  event: React.ChangeEvent<HTMLInputElement>
-}
-
-interface HandlePercentageProps extends SetterHandler {
-  percentage: number
-}
+import { type HandleChangeProps, type HandlePercentageProps } from '../types.d'
 
 export function handleChange ({ event, setterFunction }: HandleChangeProps): void {
   setterFunction(Number(event.target.value))
 }
 
+const isNegative = (value: number): boolean => Math.sign(value) === -1
+
 export function handlePercentage ({ setterFunction, percentage }: HandlePercentageProps): void {
-  setterFunction(percentage)
+  let newPercentage = percentage
+
+  if (isNegative(newPercentage)) {
+    newPercentage *= -1
+  }
+  if (newPercentage >= 1) {
+    setterFunction(newPercentage / 100)
+    return
+  }
+
+  setterFunction(newPercentage)
 }
