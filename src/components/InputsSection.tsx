@@ -1,5 +1,6 @@
 import { DolarIcon, PersonIcon } from './Icons'
 import { type InputsSectionProps } from '../types.d'
+import InputButton from './InputButton'
 
 const InputsSection: React.FC<InputsSectionProps> = ({ handleBill, handleClick, handleCustomPercentage, handlePeople }) => {
   return (
@@ -32,11 +33,11 @@ const InputsSection: React.FC<InputsSectionProps> = ({ handleBill, handleClick, 
       
       `}
         >
-          <button onClick={() => handleClick(0.05)}>5%</button>
-          <button onClick={() => handleClick(0.10)}>10%</button>
-          <button onClick={() => handleClick(0.15)}>15%</button>
-          <button onClick={() => handleClick(0.20)}>20%</button>
-          <button onClick={() => handleClick(0.50)}>50%</button>
+          <InputButton handleClick={handleClick} percentage={0.05} percentageDisplay='5%' />
+          <InputButton handleClick={handleClick} percentage={0.10} percentageDisplay='10%' />
+          <InputButton handleClick={handleClick} percentage={0.15} percentageDisplay='15%' />
+          <InputButton handleClick={handleClick} percentage={0.2} percentageDisplay='20%' />
+          <InputButton handleClick={handleClick} percentage={0.5} percentageDisplay='50%' />
           <input
             className='bg-teal-100/50 font-bold placeholder-teal-900/70 text-teal-900/70 py-3 text-2xl px-10'
             type='number'
