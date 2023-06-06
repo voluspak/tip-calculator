@@ -34,3 +34,13 @@ export interface UseCalculatorReturn {
   handleBill: (event: InputChangeEvent) => void
   handlePeople: (event: InputChangeEvent) => void
 }
+
+export interface InputButtonProps {
+  percentage: number
+  handleClick: (percentage: number) => void
+  percentageDisplay: string
+}
+export interface MountsDisplayProps {
+  title: string
+  mount: number
+}

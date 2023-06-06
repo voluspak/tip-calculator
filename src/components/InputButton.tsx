@@ -1,8 +1,4 @@
-interface InputButtonProps {
-  percentage: number
-  handleClick: (percentage: number) => void
-  percentageDisplay: string
-}
+import { InputButtonProps } from '../types.d'
 
 const InputButton: React.FC<InputButtonProps> = ({ handleClick, percentage, percentageDisplay }) => {
   return (

@@ -6,6 +6,8 @@ const InputsSection: React.FC<InputsSectionProps> = ({ handleBill, handleClick, 
   return (
     <section className={`
     texto flex flex-col gap-4
+    lg:w-2/4
+
     [&>fieldset]:flex [&>fieldset]:flex-col [&>fieldset]:w-full
 
     [&>fieldset>div>input]:w-full [&>fieldset>div>input]:bg-teal-100/50 [&>fieldset>div>input]:self-center
